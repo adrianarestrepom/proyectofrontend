@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function CreateGroup({ data, setData, newId }) {
   const [groupName, setGroupName] = useState("");
+  const [groupOwner, setGroupOwner] = useState(""); 
   const [validationError, setValidationError] = useState("");
   const [open, setOpen] = useState(false);
   const [groupColor, setGroupColor] = useState("#ffffff");
@@ -14,6 +15,7 @@ export default function CreateGroup({ data, setData, newId }) {
     setOpen(false);
     setValidationError("");
     setGroupName("");
+    setGroupOwner(""); 
   };
 
   const listColors = [
@@ -27,6 +29,10 @@ export default function CreateGroup({ data, setData, newId }) {
     "#ff2630",
   ];
 
+  const handleGroupOwnerChange = (event) => { 
+    setGroupOwner(event.target.value);
+  };
+
   const handleGroupNameChange = (event) => {
     setGroupName(event.target.value);
   };
@@ -36,7 +42,7 @@ export default function CreateGroup({ data, setData, newId }) {
   };
 
   function validarCampos() {
-    if (!groupName.trim()) {
+    if (!groupName.trim() ) {
       setValidationError("Elije un nombre para continuar");
       return false;
     } else if (groupName.length > 30) {
@@ -57,7 +63,7 @@ export default function CreateGroup({ data, setData, newId }) {
             "Content-type": "application/json",
           },
           body: JSON.stringify({
-            id: newId,
+            owneruserid: groupOwner,
             name: groupName,
             color: groupColor,
           }),
@@ -83,7 +89,7 @@ export default function CreateGroup({ data, setData, newId }) {
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold text-yellow-500">GROUPS</h1>
           <button
-            className="bg-primary text-white py-2 px-4 rounded hover:bg-secondary"
+            className="bg-primary text-white py-2 px-4 rounded hover:bg-secondary bg-coffee"
             onClick={handleOpen}
           >
             Nuevo grupo
@@ -119,6 +125,13 @@ export default function CreateGroup({ data, setData, newId }) {
                   value={groupName}
                   onChange={handleGroupNameChange}
                 />
+                <input
+                  type="text"
+                  placeholder="Dueño del Grupo"
+                  className="w-full border border-gray-300 p-2 rounded mb-4"
+                  value={groupOwner}
+                  onChange={handleGroupOwnerChange}
+                />                
                 <div className="flex flex-wrap gap-2">
                   {listColors.map((colorGroup, index) => (
                     <button
