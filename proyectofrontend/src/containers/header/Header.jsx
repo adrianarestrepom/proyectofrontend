@@ -1,49 +1,49 @@
-import { Link } from "react-router-dom";
-import Logo from "../../assets/Logo.svg";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
-import { Nav } from "../../components/Nav";
-import { useState, useEffect } from "react";
+// import { Link } from "react-router-dom";
+// import Logo from "../../assets/Logo.svg";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
+// import { Nav } from "../../components/Nav";
+// import { useState, useEffect } from "react";
 
-const Header = () => {
-  const [isMobile, setIsMobile ] = useState(false);
+// const Header = () => {
+//   const [isMobile, setIsMobile ] = useState(false);
 
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 788);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
+//   useEffect(() => {
+//     const checkMobile = () => setIsMobile(window.innerWidth <= 788);
+//     checkMobile();
+//     window.addEventListener("resize", checkMobile);
 
-    return () => window.removeEventListener("resize", checkMobile);
-    }, []);
+//     return () => window.removeEventListener("resize", checkMobile);
+//     }, []);
 
-    const renderNav = () => (
-      <Nav className={isMobile ? "sm:hidden" : "hidden sm:flex"} />
-    );
+//     const renderNav = () => (
+//       <Nav className={isMobile ? "sm:hidden" : "hidden sm:flex"} />
+//     );
 
-    return (
-      <header className="bg-coffee font-fredoka sticky top-0 z-5 w-full">
-        <div className="w-full flex justify-between p-4">
-          <Link to="/home" className="flex items-center">
-            <img src={Logo} alt="Vaquita" className="size-12"/>
-            <h1 className="text-white font-bold pl-3 text-xl"> Mi Vaquita </h1>
+//     return (
+//       <header className="bg-coffee font-fredoka sticky top-0 z-5 w-full">
+//         <div className="w-full flex justify-between p-4">
+//           <Link to="/home" className="flex items-center">
+//             <img src={Logo} alt="Vaquita" className="size-12"/>
+//             <h1 className="text-white font-bold pl-3 text-xl"> Mi Vaquita </h1>
 
-          </Link>
-          {!isMobile && renderNav()}
-          <Link to="/">
-            <div className="flex">
-              <FontAwesomeIcon
-              icon={faUserCircle}
-              className="text-white p-2 size-8"
-              />
-            </div>
-          </Link>
-        </div>
-        {isMobile && renderNav()}
-      </header>
-    );
-};
+//           </Link>
+//           {!isMobile && renderNav()}
+//           <Link to="/">
+//             <div className="flex">
+//               <FontAwesomeIcon
+//               icon={faUserCircle}
+//               className="text-white p-2 size-8"
+//               />
+//             </div>
+//           </Link>
+//         </div>
+//         {isMobile && renderNav()}
+//       </header>
+//     );
+// };
 
-export default Header
+// export default Header
 
 
 
