@@ -6,6 +6,7 @@ import Groups from "./components/grupos/Grupos.jsx";
 // import EditGroup from "./components/grupos/EditGroup.jsx";
 // import Bills from "./components/bills/Bills.jsx";
 // import Home from "./components/Home.jsx"; // Nuevo componente de inicio
+import Login from "./components/Login.jsx"
 
 import "./App.css";
 
@@ -15,7 +16,7 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          {/* <Route path="/" element={<Home />} /> Nueva ruta para la página de inicio */}
+          <Route path="/" element={<Login />} />
           {/* <Route path="/friends" element={<Friends />} /> */}
           {/* <Route path="/bills" element={<Bills />} /> */}
           <Route path="/groups" element={<Groups />} />
