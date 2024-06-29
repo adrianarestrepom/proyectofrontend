@@ -1,57 +1,71 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
+import { useAuth } from "../../hooks/useAuth.js";
 
 function Navbar() {
-  const [activeOpcion, setActiveOpcion] = useState("friends");
+  const { isAuthenticated } = useAuth();
+  const location = useLocation();
+  const { pathname } = location;
+
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
-    <nav className="font-fredoka bg-coffee p-4">
-
-      <div className="flex relative">
-        <img
-          className="h-10"
-          src="./src/assets/Logo.svg"
-          alt="Logo Aplicación"
-        />
-        <h2 className="text-white font-bold text-2xl ml-2 text-left">Mi Vaquita</h2>
-        <NavLink to="/profile" >
-          <FontAwesomeIcon icon={faCircleUser} className="text-white h-6 absolute right-0 mr-4 mt-2" />
+    <nav className="font-fredoka bg-coffee p-4 bottom-auto">
+      <div className="flex items-center justify-between h-auto">
+        <div className="flex items-center">
+          <img
+            className="h-12"
+            src="./src/assets/Logo.svg"
+            alt="Logo Aplicación"
+          />
+          <h2 className="text-white font-bold text-2xl ml-2">Mi Vaquita</h2>
+        </div>
+        <NavLink to="/loguin">
+          <FontAwesomeIcon
+            icon={faCircleUser}
+            className="text-white h-8"
+          />
         </NavLink>
       </div>
 
-      <div className="flex space-x-12 justify-center text-2xl m-3">
+      <div className="flex space-x-12 justify-center text-xl mt-2">
         <NavLink
           to="/friends"
-          onClick={() => setActiveOpcion("friends")}
-          className={`text-white hover:text-gray-300 ${
-            activeOpcion === "friends" && "font-bold"
-          }`}>
+          className={`relative text-white hover:text-gray-300 ${
+            pathname === "/friends" && "font-bold"
+          }`}
+        >
           Amigos
-          {activeOpcion === "friends" && <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 -mb-6 w-0 h-0 border-t-0 border-l-12 border-r-12 border-solid border-transparent border-white"></div>}
+          {pathname === "/friends" && (
+            <div className="absolute left-1/2 transform -translate-x-1/2 translate-y-full w-4 h-4 border-l-8 border-r-8 border-b-8 border-solid border-transparent border-b-white"></div>
+          )}
         </NavLink>
         <NavLink
           to="/bills"
-          onClick={() => setActiveOpcion("bills")}
-          className={`text-white hover:text-gray-300 ${
-            activeOpcion === "bills" && "font-bold"
+          className={`relative text-white hover:text-gray-300 ${
+            pathname === "/bills" && "font-bold"
           }`}
         >
           Gastos
-          {activeOpcion === "bills" && <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 -mb-6 w-0 h-0 border-t-0 border-l-12 border-r-12 border-solid border-transparent border-white"></div>}
+          {pathname === "/bills" && (
+            <div className="absolute left-1/2 transform -translate-x-1/2 translate-y-full w-4 h-4 border-l-8 border-r-8 border-b-8 border-solid border-transparent border-b-white"></div>
+          )}
         </NavLink>
         <NavLink
           to="/groups"
-          onClick={() => setActiveOpcion("groups")}
-          className={`text-white hover:text-gray-300 ${
-            activeOpcion === "groups" && "font-bold"
+          className={`relative text-white hover:text-gray-300 ${
+            pathname === "/groups" && "font-bold"
           }`}
         >
           Grupos
-          {activeOpcion === "groups" && <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 -mb-6 w-0 h-0 border-t-0 border-l-12 border-r-12 border-solid border-transparent border-white"></div>}
+          {pathname === "/groups" && (
+            <div className="absolute left-1/2 transform -translate-x-1/2 translate-y-full w-4 h-4 border-l-8 border-r-8 border-b-8 border-solid border-transparent border-b-white"></div>
+          )}
         </NavLink>
-        
       </div>
     </nav>
   );

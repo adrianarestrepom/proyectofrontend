@@ -1,28 +1,18 @@
 import { useState } from "react";
 import axios from 'axios';
-import { Navigate, useNavigate } from "react-router-dom";
-import { NavLink } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 
-
-
-const Login = () => {
+const LoginInit = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
   const [errors, setErrors] = useState({});
-
-
-  
 
   const validateFields = () => {
     const newErrors = {};
 
     if (!email) {
       newErrors.email = "El email es obligatorio";
-    }
-
-    if (!username) {
-      newErrors.username = "El usuario es obligatorio";
     }
 
     if (!password) {
@@ -42,16 +32,20 @@ const Login = () => {
     }
 
     try {
-      await axios.post("http://localhost:3000/users", {
-        name: username,
+      const response = await axios.post("http://localhost:3000/login", {
         email: email,
         password: password,
       });
-       
+
+      if (response.status === 200) {
+        sessionStorage.setItem('token', response.data.token);
+        sessionStorage.setItem('userId', response.data.userId);
+        window.dispatchEvent(new Event('storage'));
+        navigate('/groups');
+      }
 
       setErrors({});
       console.log("Email:", email);
-      console.log("Usuario:", username);
       console.log("Password:", password);
       // Aquí puedes añadir la lógica para manejar el inicio de sesión
     } catch (error) {
@@ -72,28 +66,10 @@ const Login = () => {
               className="w-64"
             />
           </div>
-          <h1 className="flex text-coffee text-lg font-bold justify-center">Registro</h1>
+          <h1 className="flex text-coffee text-lg font-bold justify-center">Inicio de Sesion</h1>
 
           <form onSubmit={handleSubmit} className="form">
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
-                Nombre
-              </label>
-              <input
-                type="text"
-                id="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
-                  errors.username ? "border-red-500" : ""
-                }`}
-                placeholder="Nombre"
-              />
-              {errors.username && (
-                <p className="text-red-500 text-xs italic">{errors.username}</p>
-              )}
-            </div>
-
+            
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
                 Correo electrónico
@@ -133,30 +109,27 @@ const Login = () => {
             </div>
 
             <div className="flex items-center justify-between">
-              
               <button
                 type="submit"
                 className="bg-brown-800 text-orange-500 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                onClick={handleSubmit}
               >
-                Registrarse
+                Iniciar sesión
               </button>
+              <NavLink
+                to="/Loguin">
+                <button
+                  type="button"
+                  className="bg-brown-800 text-orange-500 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                  Registrarse
+                </button>
+              </NavLink>
             </div>
           </form>
-          <NavLink
-          to="/loguinInit">            
-            <button
-                type="button"
-                className="bg-brown-800 text-orange-500 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-                Ingresar
-              </button>
-          </NavLink>
-          
         </div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default LoginInit;

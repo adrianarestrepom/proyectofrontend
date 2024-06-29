@@ -16,14 +16,15 @@ export default function CreateGroup({ data, setData, newId }) {
     setValidationError("");
     setGroupName("");
     setGroupOwner(""); 
+    setGroupColor("#ffffff");
   };
 
   const listColors = [
+    "#ffffff",
     "#a65293",
     "#66b04c",
     "#995036",
     "#4f80a4",
-    "#ffffff",
     "#ffa72e",
     "#fee3e2",
     "#ff2630",
@@ -37,7 +38,8 @@ export default function CreateGroup({ data, setData, newId }) {
     setGroupName(event.target.value);
   };
 
-  const handleColor = (groupColor) => {
+  const handleColor = (e, groupColor) => {
+    e.preventDefault();
     setGroupColor(groupColor);
   };
 
@@ -69,11 +71,12 @@ export default function CreateGroup({ data, setData, newId }) {
           }),
         });
         if (response.status === 201) {
-          handleClose();
+          
           const newGroup = await response.json();
           setData([...data, newGroup]);
 
-          navigate(`/grupos/editgroup/${newId}`);
+          navigate(`/groups`);
+          handleClose();
         } else if (response.status === 409) {
           setValidationError("El nombre del grupo ya Existe");
         }
@@ -136,15 +139,15 @@ export default function CreateGroup({ data, setData, newId }) {
                   {listColors.map((colorGroup, index) => (
                     <button
                       key={index}
-                      className="w-10 h-10 rounded-full"
+                      className={`w-10 h-10 rounded-full border-slate-300 ${groupColor === colorGroup ? 'border-4':'border'} `}
                       style={{ backgroundColor: colorGroup }}
-                      onClick={() => handleColor(colorGroup)}
+                      onClick={(e) => handleColor(e, colorGroup)}
                     />
                   ))}
                 </div>
                 <button
                   type="submit"
-                  className="bg-primary text-white py-2 px-4 rounded hover:bg-secondary"
+                  className="bg-coffee text-white py-2 px-4 rounded hover:bg-secondary"
                 >
                   Crear
                 </button>

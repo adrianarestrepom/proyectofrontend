@@ -13,6 +13,8 @@ export default function MediaCard() {
     "http://localhost:3000/groups"
   );
 
+  console.log('hola');
+
   if (data) {
     newId = Math.max(...data.map((item) => item.id));
   }
