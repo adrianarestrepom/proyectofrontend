@@ -1,8 +1,7 @@
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../../hooks/useAuth.js";
+import DropdownMenu from "../DropdownMenu.jsx"; // Asegúrate de que esta ruta sea correcta
 
 function Navbar() {
   const { isAuthenticated } = useAuth();
@@ -24,12 +23,7 @@ function Navbar() {
           />
           <h2 className="text-white font-bold text-2xl ml-2">Mi Vaquita</h2>
         </div>
-        <NavLink to="/loguin">
-          <FontAwesomeIcon
-            icon={faCircleUser}
-            className="text-white h-8"
-          />
-        </NavLink>
+        <DropdownMenu /> {/* Usa el DropdownMenu aquí */}
       </div>
 
       <div className="flex space-x-12 justify-center text-xl mt-2">
@@ -72,3 +66,4 @@ function Navbar() {
 }
 
 export default Navbar;
+

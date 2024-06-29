@@ -2,18 +2,20 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFetch } from "../../hooks/useFetch.jsx";
 import ModalCreateGroup from "./CreateGroup.jsx";
+import ModalDelete from "../ModalDelete.jsx"; // Importa el ModalDelete
 import logo from "../../assets/Logo.svg";
+
 
 export default function MediaCard() {
   let newId = 0;
 
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedGroup, setSelectedGroup] = useState(null);
   const { data, setData, loading, error } = useFetch(
     "http://localhost:3000/groups"
   );
-
-  console.log('hola');
 
   if (data) {
     newId = Math.max(...data.map((item) => item.id));
@@ -33,9 +35,25 @@ export default function MediaCard() {
     }
   };
 
+  const handleDelete = (group) => {
+    setSelectedGroup(group);
+    setDeleteModalOpen(true);
+  };
+
+  const handleDeleteSuccess = () => {
+    setData(data.filter(item => item.id !== selectedGroup.id));
+    setDeleteModalOpen(false);
+  };
+
   return (
     <>
       <ModalCreateGroup data={data} setData={setData} newId={newId + 1} />
+      <ModalDelete
+        group={selectedGroup}
+        isOpen={deleteModalOpen}
+        setIsOpen={setDeleteModalOpen}
+        onSuccess={handleDeleteSuccess}
+      />
       {loading && <p>Loading..... </p>}
       {error && <p>Error: {error} </p>}
 
@@ -67,8 +85,9 @@ export default function MediaCard() {
             >
               Editar
             </button>
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            <button 
+              onClick={() => handleDelete(group)}
+              className="bg-coffee hover:bg-orange-900 text-white font-bold py-2 px-4 rounded border m-1 p-5"
             >
               Eliminar
             </button>
@@ -78,4 +97,3 @@ export default function MediaCard() {
     </>
   );
 }
-
