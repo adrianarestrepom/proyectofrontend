@@ -6,7 +6,7 @@ import Groups from "./components/grupos/Grupos.jsx";
 // import EditGroup from "./components/grupos/EditGroup.jsx";
 // import Bills from "./components/bills/Bills.jsx";
 // import Home from "./components/Home.jsx"; // Nuevo componente de inicio
-import Login from "./components/Login.jsx"
+import Register from "./components/Register.jsx"
 import ProtetedRoute from "./ProtetedRoute.jsx";
 import LoginInit from "./components/LoginInit.jsx"
 
@@ -21,9 +21,9 @@ function App() {
       
         <Navbar/>
         <Routes>
-          <Route path="/loguin" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/loguinInit" element={<LoginInit />} />
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Register />} />
           {/* <Route path="/friends" element={<Friends />} /> */}
           {/* <Route path="/bills" element={<Bills />} /> */}
           <Route path="/groups" element={<ProtectedRoute><Groups/></ProtectedRoute>} /> 

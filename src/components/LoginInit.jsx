@@ -1,22 +1,25 @@
-import { useState } from "react";
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 import { useNavigate, NavLink } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser, faKey } from "@fortawesome/free-solid-svg-icons";
 
 const LoginInit = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [authError, setAuthError] = useState("");
 
   const validateFields = () => {
     const newErrors = {};
 
     if (!email) {
-      newErrors.email = "El email es obligatorio";
+      newErrors.email = "Email es obligatorio";
     }
 
     if (!password) {
-      newErrors.password = "La contraseña es obligatoria";
+      newErrors.password = "Contraseña es obligatoria";
     }
 
     return newErrors;
@@ -38,94 +41,115 @@ const LoginInit = () => {
       });
 
       if (response.status === 200) {
-        sessionStorage.setItem('token', response.data.token);
-        sessionStorage.setItem('userId', response.data.userId);
-        window.dispatchEvent(new Event('storage'));
-        navigate('/groups');
+        sessionStorage.setItem("token", response.data.token);
+        sessionStorage.setItem("userId", response.data.userId);
+        window.dispatchEvent(new Event("storage"));
+        navigate("/groups");
+        setAuthError("");
       }
-
-      setErrors({});
-      console.log("Email:", email);
-      console.log("Password:", password);
-      // Aquí puedes añadir la lógica para manejar el inicio de sesión
     } catch (error) {
       console.error("Error en la solicitud:", error);
-      // Puedes manejar errores adicionales aquí
+      setAuthError("Email o contraseña inválidos");
     }
   };
 
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 font-fredoka">
-      <div className="w-full max-w-xs">
-        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"> 
-          
-          <div className="flex justify-center mb-4">
-            <img
-              src="./src/assets/Logo decoration.svg"
-              alt="Logo"
-              className="w-64"
-            />
-          </div>
-          <h1 className="flex text-coffee text-lg font-bold justify-center">Inicio de Sesion</h1>
+  const handleRegister = () => {
+    navigate("/Register");
+  };
 
+  return (
+    <div className="grid bg-gray-100 justify-center font-fredoka text-coffee py-6">
+      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div className="py-3">
+          <img
+            src="./src/assets/Logo decoration.svg"
+            alt="Logo"
+            className="w-64 py-3 mt-8"
+          />
+          <h1 className="my-3 text-xl font-bold justify-center text-center">
+            Iniciar sesión
+          </h1>
+        </div>
+        {authError && (
+          <div
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+            role="alert"
+          >
+            <strong className="font-bold">Error: </strong>
+            <span className="block sm:inline">{authError}</span>
+          </div>
+        )}
+
+        <div>
           <form onSubmit={handleSubmit} className="form">
-            
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-                Correo electrónico
-              </label>
+            <div className="mb-4 relative">
+              <label
+                className="block text-coffee text-sm font-bold mb-2"
+                htmlFor="email"
+              ></label>
               <input
                 type="email"
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
+                className={`appearance-none border text-coffee rounded w-full py-2 px-3 pr-10 leading-tight focus:outline-none ${
                   errors.email ? "border-red-500" : ""
                 }`}
-                placeholder="Correo electrónico"
+                placeholder="Correo"
+              />
+              <FontAwesomeIcon
+                icon={faUser}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-coffee"
               />
               {errors.email && (
                 <p className="text-red-500 text-xs italic">{errors.email}</p>
               )}
             </div>
 
-            <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-                Contraseña
-              </label>
+            <div className="mb-6 relative py-3">
+              <label
+                className="block text-coffee text-sm font-bold mb-2"
+                htmlFor="password"
+              ></label>
               <input
                 type="password"
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
-                  errors.password ? "border-red-500" : ""
+                className={`appearance-none border rounded w-full py-2 px-3 pr-10 text-coffee leading-tight focus:outline-none ${
+                  errors.email ? "border-red-500" : ""
                 }`}
                 placeholder="Contraseña"
+              />
+              <FontAwesomeIcon
+                icon={faKey}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-coffee "
               />
               {errors.password && (
                 <p className="text-red-500 text-xs italic">{errors.password}</p>
               )}
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="grid grid-cols-1 gap-2 justify-between">
               <button
                 type="submit"
-                className="bg-brown-800 text-orange-500 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                className="bg-coffee text-white tracking-wider font-bold py-2 px-4 rounded border-coffee border-solid"
               >
-                Iniciar sesión
+                Ingresar
               </button>
-              <NavLink
-                to="/Loguin">
-                <button
-                  type="button"
-                  className="bg-brown-800 text-orange-500 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                >
-                  Registrarse
-                </button>
-              </NavLink>
+              <button
+                type="button"
+                onClick={handleRegister}
+                className="tracking-wider border-[1px] font-bold py-2 px-4 rounded border-coffee"
+              >
+                Registrarme
+              </button>
             </div>
           </form>
+        </div>
+
+        <div>
+          <div className="flex justify-center mb-4"></div>
         </div>
       </div>
     </div>
