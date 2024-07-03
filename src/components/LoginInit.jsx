@@ -117,7 +117,7 @@ const LoginInit = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className={`appearance-none border rounded w-full py-2 px-3 pr-10 text-coffee leading-tight focus:outline-none ${
-                  errors.email ? "border-red-500" : ""
+                  errors.password ? "border-red-500" : ""
                 }`}
                 placeholder="Contraseña"
               />
@@ -148,9 +148,7 @@ const LoginInit = () => {
           </form>
         </div>
 
-        <div>
-          <div className="flex justify-center mb-4"></div>
-        </div>
+        
       </div>
     </div>
   );

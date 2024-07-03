@@ -5,7 +5,6 @@ import ModalCreateGroup from "./CreateGroup.jsx";
 import ModalDelete from "../ModalDelete.jsx"; // Importa el ModalDelete
 import logo from "../../assets/Logo.svg";
 
-
 export default function MediaCard() {
   let newId = 0;
 
@@ -31,7 +30,7 @@ export default function MediaCard() {
 
   const handleEdit = (id) => {
     if (id) {
-      navigate(`/groups/editgroup/${id}`); // Asegúrate de usar comillas invertidas (`) para envolver la cadena de la ruta
+      navigate(`/groups/editgroup/${id}`);
     }
   };
 
@@ -97,4 +96,3 @@ export default function MediaCard() {
     </>
   );
 }
-
