@@ -1,21 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function CreateGroup({ data, setData, newId }) {
+export default function CreateGroup({ data, setData }) {
   const [groupName, setGroupName] = useState("");
   const [groupOwner, setGroupOwner] = useState(""); 
   const [validationError, setValidationError] = useState("");
   const [open, setOpen] = useState(false);
   const [groupColor, setGroupColor] = useState("#ffffff");
-
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const userId = sessionStorage.getItem("userId");
+    setGroupOwner(userId); 
+  }, []);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
     setValidationError("");
     setGroupName("");
-    setGroupOwner(""); 
     setGroupColor("#ffffff");
   };
 
@@ -30,10 +33,6 @@ export default function CreateGroup({ data, setData, newId }) {
     "#ff2630",
   ];
 
-  const handleGroupOwnerChange = (event) => { 
-    setGroupOwner(event.target.value);
-  };
-
   const handleGroupNameChange = (event) => {
     setGroupName(event.target.value);
   };
@@ -43,11 +42,13 @@ export default function CreateGroup({ data, setData, newId }) {
     setGroupColor(groupColor);
   };
 
-  function validarCampos() {
+  function validarCampos(e) {
     if (!groupName.trim() ) {
+      e.preventDefault();
       setValidationError("Elije un nombre para continuar");
       return false;
     } else if (groupName.length > 30) {
+      e.preventDefault();
       setValidationError("Nombre del grupo supera el máximo permitido");
       return false;
     } else {
@@ -56,13 +57,14 @@ export default function CreateGroup({ data, setData, newId }) {
   }
 
   const handleCreateGroup = async (e) => {
-    if (validarCampos() === true) {
+    if (validarCampos(e)) {
       e.preventDefault();
       try {
         const response = await fetch("http://localhost:3000/groups", {
           method: "POST",
           headers: {
             "Content-type": "application/json",
+            "Authorization": `Bearer ${sessionStorage.getItem("token")}`,
           },
           body: JSON.stringify({
             owneruserid: groupOwner,
@@ -70,18 +72,20 @@ export default function CreateGroup({ data, setData, newId }) {
             color: groupColor,
           }),
         });
+
         if (response.status === 201) {
-          
           const newGroup = await response.json();
           setData([...data, newGroup]);
-
-          navigate(`/groups`);
           handleClose();
+          navigate("/groups", { replace: true }); // Navega a /groups y reemplaza la entrada en el historial
         } else if (response.status === 409) {
-          setValidationError("El nombre del grupo ya Existe");
+          setValidationError("El nombre del grupo ya existe");
+        } else {
+          const errorData = await response.json();
+          setValidationError(`Error: ${errorData.message || 'Algo salió mal'}`);
         }
       } catch (error) {
-        setValidationError("Error: ", error);
+        setValidationError(`Error: ${error.message || 'Algo salió mal'}`);
       }
     }
   };
@@ -89,10 +93,10 @@ export default function CreateGroup({ data, setData, newId }) {
   return (
     <>
       <div>
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center font-fredoka m-3">
           <h1 className="text-2xl font-bold text-yellow-500">GROUPS</h1>
           <button
-            className="bg-primary text-white py-2 px-4 rounded hover:bg-secondary bg-coffee"
+            className="bg-coffee text-white tracking-wider font-bold p-1 rounded border-coffee border-solid px-4"
             onClick={handleOpen}
           >
             Nuevo grupo
@@ -120,20 +124,13 @@ export default function CreateGroup({ data, setData, newId }) {
                   </svg>
                 </button>
               </div>
-              <form onSubmit={handleCreateGroup}>
+              <form onSubmit={(e) => handleCreateGroup(e)}>
                 <input
                   type="text"
                   placeholder="Nombre del grupo"
                   className="w-full border border-gray-300 p-2 rounded mb-4"
                   value={groupName}
                   onChange={handleGroupNameChange}
-                />
-                <input
-                  type="text"
-                  placeholder="Dueño del Grupo"
-                  className="w-full border border-gray-300 p-2 rounded mb-4"
-                  value={groupOwner}
-                  onChange={handleGroupOwnerChange}
                 />                
                 <div className="flex flex-wrap gap-2">
                   {listColors.map((colorGroup, index) => (

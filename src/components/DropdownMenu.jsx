@@ -13,6 +13,12 @@ const DropdownMenu = () => {
     setIsOpen: setIsDropdownOpen,
   });
 
+  const onLogOut = () => {
+    setIsDropdownOpen(false);
+    sessionStorage.removeItem("token");
+    window.dispatchEvent(new Event("storage"));
+  };
+
   // Cierra el dropdown al hacer clic fuera del elemento
   React.useEffect(() => {
     const closeDropdown = (e) => {
@@ -41,18 +47,18 @@ const DropdownMenu = () => {
         id="dropdown"
         className={`z-10 ${
           isDropdownOpen ? '' : 'hidden'
-        } bg-white divide-y divide-gray-100 absolute right-0 top-[40px] rounded-lg shadow dark:bg-gray-700`}
+        } bg-white divide-gray-100 absolute right-0 top-[40px] rounded-lg shadow dark:bg-gray-700`}
       >
         <ul
-          className="py-2 text-sm text-gray-700 dark:text-gray-200"
+          className="py-0 text-sm text-gray-700 dark:text-gray-200"
           aria-labelledby="dropdownDefaultButton"
         >
-          <DropdownElement
+          {/* <DropdownElement
             onClick={() => setIsDropdownOpen(false)}
             text="Account"
             path="/my-account"
-          />
-          <DropdownElement onClick={() => setIsDropdownOpen(false)} text="Logout" path="/loguinInit" />
+          /> */}
+          <DropdownElement onClick={onLogOut} text="Salir" path="/loguinInit" />
         </ul>
       </div>
     </div>

@@ -60,17 +60,20 @@ export default function MediaCard() {
       {data?.map((group) => (
         <div
           key={group.id}
-          className="bg-white shadow-md rounded-lg overflow-hidden flex mb-4"
-          style={{ backgroundColor: group.color }}
+          className="bg-white shadow-lg rounded-lg overflow-hidden flex m-4 font-fredoka"
+          
         >
-          <img
-            className="w-1/4 min-w-48"
+          <div className="flex justify-center items-center size-32 m-4 " style={{ backgroundColor: group.color }}>
+            <img
+            className="size-20 min-w-32"
             src={logo}
             alt="Group Logo"
           />
+          </div>
+          
 
           <div className="flex-1 p-4">
-            <h2 className="text-2xl font-bold text-yellow-500 mb-2">
+            <h2 className=" text-slate-800 capitalize text-shadow-lg  text-2xl font-bold mb-2">
               {group.name}
             </h2>
             <p className="text-gray-600 mb-2">
@@ -79,18 +82,21 @@ export default function MediaCard() {
             <p className="text-gray-600 mb-2">
               Participantes: {/*group.members*/} amig@s
             </p>
-            <button
+            <div className="grid gap-2 grid-cols-3"> 
+              <button
               onClick={() => handleEdit(group.id)}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
+              className="bg-coffee text-white tracking-wider font-bold p-1 rounded border-coffee border-solid"
             >
               Editar
             </button>
             <button 
               onClick={() => handleDelete(group)}
-              className="bg-coffee hover:bg-orange-900 text-white font-bold py-2 px-4 rounded border m-1 p-5"
+              className="bg-coffee text-white tracking-wider font-bold p-1 rounded border-coffee border-solid"
             >
               Eliminar
             </button>
+            </div>
+            
           </div>
         </div>
       ))}

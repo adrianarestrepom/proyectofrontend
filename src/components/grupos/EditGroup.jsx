@@ -48,7 +48,7 @@ export default function EditGroup() {
   }, [id]);
 
   const handleReturn = () => {
-    navigate("/Groups");
+    navigate("/groups", { replace: true });
   };
 
   const handleGroupNameChange = (event) => {
@@ -59,7 +59,8 @@ export default function EditGroup() {
     setGroupOwner(event.target.value);
   };
 
-  const handleColor = (color) => {
+  const handleColor = (e, color) => {
+    e.preventDefault();
     setGroupColor(color);
   };
 
@@ -135,7 +136,7 @@ export default function EditGroup() {
                 key={index}
                 className={`w-10 h-10 rounded-full border-slate-300 ${groupColor === color ? 'border-4' : 'border'}`}
                 style={{ backgroundColor: color }}
-                onClick={() => handleColor(color)}
+                onClick={(e) => handleColor(e, color)}
               />
             ))}
           </div>
